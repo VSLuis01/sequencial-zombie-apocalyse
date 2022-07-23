@@ -7,6 +7,7 @@
 Apocalypse::Apocalypse() {
     this->initVariables();
     this->initWindow();
+    this->initWorld();
 }
 
 Apocalypse::~Apocalypse() {
@@ -27,6 +28,9 @@ void Apocalypse::initWindow() {
     this->window->setFramerateLimit(60);
 }
 
+void Apocalypse::initWorld() {
+    this->apoWorld = World(10, this->window->getSize());
+}
 
 void Apocalypse::pollEvents() {
     while (this->window->pollEvent(this->ev)) {
@@ -49,11 +53,13 @@ void Apocalypse::pollEvents() {
 
 void Apocalypse::update() {
     this->pollEvents();
+    this->apoWorld.update();
 }
 
 void Apocalypse::render() {
     this->window->clear(sf::Color::White);
 
+    this->apoWorld.render(*this->window);
 
     this->window->display();
 }

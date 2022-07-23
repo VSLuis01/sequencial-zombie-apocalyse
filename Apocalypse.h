@@ -5,26 +5,27 @@
 #ifndef MPI_ZOMBIE_APOCALYPSE_APOCALYPSE_H
 #define MPI_ZOMBIE_APOCALYPSE_APOCALYPSE_H
 
-#include "Cell.h"
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+#include "World.h"
 
 class Apocalypse {
 private:
     //Window
     sf::RenderWindow* window;
     sf::VideoMode videoMode;
-
     sf::Event ev;
 
     /*Game control*/
     bool running;
+    World apoWorld;
 
 
     /*Private Functions*/
     void initVariables();
     void initWindow();
+    void initWorld();
 
 public:
 
