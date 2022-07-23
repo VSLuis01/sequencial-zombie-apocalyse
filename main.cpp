@@ -1,6 +1,12 @@
-#include <iostream>
+#include "Apocalypse.h"
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    Apocalypse game;
+
+    while(game.isRunning()) {
+        game.update();
+        game.render();
+    }
+
     return 0;
 }
