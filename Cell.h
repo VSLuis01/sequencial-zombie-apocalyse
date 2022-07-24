@@ -19,6 +19,7 @@ private:
 
     //Entidade que está na célula (ZombieEntity, HumanEntity)
     Entity *entity;
+
 public:
     Cell();
 
@@ -30,6 +31,13 @@ public:
 
     void updateCell();
     void render(sf::RenderTarget& target);
+
+    bool isEmpty() const;
+
+    /*Getter Setter*/
+    Entity *getEntity() const;
+    void setEntity(Entity *entity);
+
 };
 
 

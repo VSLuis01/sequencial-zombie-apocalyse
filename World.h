@@ -10,7 +10,7 @@
 #include <iostream>
 #include "Human.h"
 #include "Zombie.h"
-
+#include <ctime>
 
 class World {
 private:
@@ -18,7 +18,16 @@ private:
     sf::Vector2u windowSize;
     std::vector<Cell*> matrixCells;
 
+    /*Private Functions*/
     void initWorld();
+    void placeHumans();
+    void placeZombies();
+    void initVariables();
+    bool isEmptyPlace(int index) const;
+
+    /*Private variables*/
+    int numHumans;
+    int numZombies;
 public:
     World();
 

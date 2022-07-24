@@ -54,9 +54,31 @@ void Cell::initCell() {
 }
 
 void Cell::updateCell() {
-
+    this->setFillColor(this->color);
 }
 
 void Cell::render(sf::RenderTarget &target) {
     target.draw(*this);
+}
+
+bool Cell::isEmpty() const {
+    return this->entity == nullptr;
+}
+
+Entity *Cell::getEntity() const {
+    return entity;
+}
+
+void Cell::setEntity(Entity *entity) {
+    Cell::entity = entity;
+    switch (this->entity->getEntityType()) {
+        case Type::HumanEntity:
+            this->color = sf::Color::Blue;
+            break;
+        case Type::ZombieEntity:
+            this->color = sf::Color::Red;
+            break;
+        default:
+            break;
+    }
 }
