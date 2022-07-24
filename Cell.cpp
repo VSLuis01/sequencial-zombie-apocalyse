@@ -33,7 +33,7 @@ void Cell::initVariables() {
 void Cell::initCell() {
     this->setFillColor(this->color);
     this->setOutlineColor(this->outlineColor);
-    this->setOutlineThickness(2.f);
+    this->setOutlineThickness(1.f);
 }
 
 void Cell::updateCell() {
