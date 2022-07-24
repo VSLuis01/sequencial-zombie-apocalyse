@@ -1,1 +1,1 @@
-# MPI-ZombieEntity-Apocalypse
+# MPI-Zombie-Apocalypse
