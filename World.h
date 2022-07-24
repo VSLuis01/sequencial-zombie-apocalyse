@@ -14,7 +14,8 @@
 
 class World {
 private:
-    int matrixOrder;
+    int matrixRow;
+    int matrixColl;
     sf::Vector2u windowSize;
     std::vector<Cell*> matrixCells;
 
@@ -32,6 +33,7 @@ public:
     World();
 
     explicit World(int matrixOrder, sf::Vector2u windowSize);
+    World(int matrixRow, int matrixColl, sf::Vector2u windowSize);
 
     virtual ~World();
 

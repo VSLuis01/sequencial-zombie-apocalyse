@@ -20,8 +20,8 @@ void Apocalypse::initVariables() {
 }
 
 void Apocalypse::initWindow() {
-    this->videoMode.width = 800;
-    this->videoMode.height = 800;
+    this->videoMode.width = 1000;
+    this->videoMode.height = 1000;
 
     this->window = new sf::RenderWindow(this->videoMode, "MPI-ZombieEntity-Apocalypse",
                                         sf::Style::Titlebar | sf::Style::Close);
@@ -30,7 +30,7 @@ void Apocalypse::initWindow() {
 }
 
 void Apocalypse::initWorld() {
-    this->apoWorld = new World(this->matrixOrder, this->window->getSize());
+    this->apoWorld = new World(this->matrixRow, this->matrixColl, this->window->getSize());
 }
 
 void Apocalypse::pollEvents() {

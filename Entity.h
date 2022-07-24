@@ -14,6 +14,7 @@ class Entity {
 protected:
     int birth;
     int longevity;
+    int age;
 
     sf::Vector2i position;
     Type entityType;
