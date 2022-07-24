@@ -8,18 +8,23 @@
 
 #include <SFML/System.hpp>
 
-enum Type {HumanEntity, ZombieEntity};
+enum Type {HumanEntity = 1, ZombieEntity = -1};
 
 class Entity {
 protected:
     int birth;
     int longevity;
     int age;
+    int reproductionAge;
 
     sf::Vector2i position;
     Type entityType;
 
 public:
+    const sf::Vector2i &getPosition() const;
+
+    void setPosition(const sf::Vector2i &position);
+
     Type getEntityType() const;
 
 public:
@@ -31,7 +36,7 @@ public:
 
     virtual ~Entity();
 
-    virtual void reproduction() = 0;
+    virtual Entity* reproduction() = 0;
 
     virtual bool isDead() = 0;
 };

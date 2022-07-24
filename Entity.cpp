@@ -18,3 +18,11 @@ Entity::Entity(int longevity, const sf::Vector2i &position) : longevity(longevit
 Type Entity::getEntityType() const {
     return entityType;
 }
+
+const sf::Vector2i &Entity::getPosition() const {
+    return position;
+}
+
+void Entity::setPosition(const sf::Vector2i &position) {
+    Entity::position = position;
+}

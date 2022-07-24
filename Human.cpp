@@ -20,11 +20,13 @@ Human::Human(int longevity, const sf::Vector2i &position) : Entity(longevity, po
     this->entityType = Type::HumanEntity;
 }
 
-void Human::reproduction() {
-
-}
 
 bool Human::isDead() {
     return false;
+}
+
+Entity *Human::reproduction() {
+
+    return nullptr;
 }
 

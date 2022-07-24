@@ -19,7 +19,7 @@ public:
 
     virtual ~Human();
 
-    void reproduction() override;
+    Entity *reproduction() override;
 
     bool isDead() override;
 };

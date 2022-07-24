@@ -31,6 +31,19 @@ void Apocalypse::initWindow() {
 
 void Apocalypse::initWorld() {
     this->apoWorld = new World(this->matrixRow, this->matrixColl, this->window->getSize());
+    std::vector<Cell*> a = this->apoWorld->getNeighborhood(6);
+    for(auto &e : a) {
+        if(e != nullptr) {
+            if(e->getEntity() != nullptr) {
+                std:: cout << e->getEntity()->getEntityType() << "\n";
+            } else {
+                std:: cout << "EMPTY" << "\n";
+            }
+        } else {
+            std::cout << "NULL" << "\n";
+        }
+    }
+    int ab = 0;
 }
 
 void Apocalypse::pollEvents() {

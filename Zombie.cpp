@@ -20,10 +20,10 @@ Zombie::~Zombie() {
 
 }
 
-void Zombie::reproduction() {
-
-}
-
 bool Zombie::isDead() {
     return false;
+}
+
+Entity *Zombie::reproduction() {
+    return nullptr;
 }

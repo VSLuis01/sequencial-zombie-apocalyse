@@ -37,10 +37,6 @@ public:
     /*Getter Setter*/
     Entity *getEntity() const;
     void setEntity(Entity *entity);
-
-    std::vector<Cell*> getNeighborhood(Cell &cell);
-    std::vector<Cell*> getNeighborhood(int index);
-    std::vector<Cell*> getNeighborhood(int row, int col);
 };
 
 

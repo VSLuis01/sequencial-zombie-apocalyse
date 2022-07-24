@@ -39,6 +39,10 @@ public:
 
     void update();
     void render(sf::RenderTarget& target);
+
+    std::vector<Cell*> getNeighborhood(Cell &cell);
+    std::vector<Cell*> getNeighborhood(int index);
+    std::vector<Cell*> getNeighborhood(int row, int col);
 };
 
 
