@@ -12,6 +12,7 @@ Apocalypse::Apocalypse() {
 
 Apocalypse::~Apocalypse() {
     delete this->window;
+    delete this->apoWorld;
 }
 
 void Apocalypse::initVariables() {
@@ -22,14 +23,14 @@ void Apocalypse::initWindow() {
     this->videoMode.width = 800;
     this->videoMode.height = 800;
 
-    this->window = new sf::RenderWindow(this->videoMode, "MPI-Zombie-Apocalypse",
+    this->window = new sf::RenderWindow(this->videoMode, "MPI-ZombieEntity-Apocalypse",
                                         sf::Style::Titlebar | sf::Style::Close);
 
     this->window->setFramerateLimit(60);
 }
 
 void Apocalypse::initWorld() {
-    this->apoWorld = World(this->matrixOrder, this->window->getSize());
+    this->apoWorld = new World(this->matrixOrder, this->window->getSize());
 }
 
 void Apocalypse::pollEvents() {
@@ -53,13 +54,13 @@ void Apocalypse::pollEvents() {
 
 void Apocalypse::update() {
     this->pollEvents();
-    this->apoWorld.update();
+    this->apoWorld->update();
 }
 
 void Apocalypse::render() {
     this->window->clear(sf::Color::White);
 
-    this->apoWorld.render(*this->window);
+    this->apoWorld->render(*this->window);
 
     this->window->display();
 }

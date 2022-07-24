@@ -22,6 +22,7 @@ public:
     void reproduction() override;
 
     bool isDead() override;
+
 };
 
 

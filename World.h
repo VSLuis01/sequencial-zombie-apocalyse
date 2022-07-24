@@ -8,12 +8,15 @@
 #include "Cell.h"
 #include <vector>
 #include <iostream>
+#include "Human.h"
+#include "Zombie.h"
+
 
 class World {
 private:
     int matrixOrder;
     sf::Vector2u windowSize;
-    std::vector<Cell> matrixCells;
+    std::vector<Cell*> matrixCells;
 
     void initWorld();
 public:

@@ -14,3 +14,7 @@ Entity::Entity(int birth, int longevity, const sf::Vector2i &position) : birth(b
                                                                          position(position) {}
 
 Entity::Entity(int longevity, const sf::Vector2i &position) : longevity(longevity), position(position) {}
+
+Type Entity::getEntityType() const {
+    return entityType;
+}

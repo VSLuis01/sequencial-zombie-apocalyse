@@ -19,7 +19,7 @@ private:
 
     /*Game control*/
     bool running;
-    World apoWorld;
+    World *apoWorld;
     int matrixOrder = 20;
 
 

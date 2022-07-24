@@ -8,12 +8,19 @@
 
 #include <SFML/System.hpp>
 
+enum Type {HumanEntity, ZombieEntity};
+
 class Entity {
-private:
+protected:
     int birth;
     int longevity;
 
     sf::Vector2i position;
+    Type entityType;
+
+public:
+    Type getEntityType() const;
+
 public:
     Entity();
 

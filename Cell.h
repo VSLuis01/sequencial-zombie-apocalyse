@@ -7,6 +7,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
+#include "Entity.h"
 
 class Cell: public sf::RectangleShape {
 private:
@@ -16,14 +17,14 @@ private:
     void initVariables();
     void initCell();
 
-    //Entidade que está na célula (Zombie, Human)
-
+    //Entidade que está na célula (ZombieEntity, HumanEntity)
+    Entity *entity;
 public:
     Cell();
 
-    explicit Cell(sf::Vector2f size);
+    explicit Cell(sf::Vector2f size, Entity* entity);
 
-    Cell(sf::Vector2f pos, sf::Vector2f size);
+    Cell(sf::Vector2f pos, sf::Vector2f size, Entity* entity);
 
     virtual ~Cell();
 
