@@ -47,6 +47,7 @@ void World::initWorld() {
 
             this->matrixCells[k]->setPosition((float) j * this->matrixCells[k]->getSize().x,
                                               (float) i * this->matrixCells[k]->getSize().y);
+            this->matrixCells[k]->setPos(sf::Vector2i(i, j));
             ++k;
         }
     }
@@ -61,7 +62,6 @@ void World::placeHumans() {
         int index = randX * this->matrixColl + randY;
         if (this->isEmptyPlace(index)) {
             this->matrixCells[index]->setEntity(new Human);
-            this->matrixCells[index]->getEntity()->setPosition(sf::Vector2i(randX, randY));
             --humans;
         }
     }
@@ -76,7 +76,6 @@ void World::placeZombies() {
         int index = randX * this->matrixColl + randY;
         if (this->isEmptyPlace(index)) {
             this->matrixCells[index]->setEntity(new Zombie);
-            this->matrixCells[index]->getEntity()->setPosition(sf::Vector2i(randX, randY));
             --zombies;
         }
     }
@@ -88,7 +87,7 @@ bool World::isEmptyPlace(int index) const {
 
 void World::update() {
     for (auto &cell: this->matrixCells) {
-        cell->updateCell();
+        cell->updateCell(this->getNeighborhood(*cell));
     }
 }
 
@@ -96,10 +95,6 @@ void World::render(sf::RenderTarget &target) {
     for (auto &cell: this->matrixCells) {
         cell->render(target);
     }
-}
-
-std::vector<Cell *> World::getNeighborhood(Cell &cell) {
-    return std::vector<Cell *>();
 }
 
 std::vector<Cell *> World::getNeighborhood(int index) {
@@ -133,6 +128,10 @@ std::vector<Cell *> World::getNeighborhood(int index) {
     return neighborhood;
 }
 
+std::vector<Cell *> World::getNeighborhood(Cell &cell) {
+    return this->getNeighborhood(cell.getPos().x, cell.getPos().y);
+}
+
 std::vector<Cell *> World::getNeighborhood(int row, int col) {
-    return std::vector<Cell *>();
+    return this->getNeighborhood(row * this->matrixColl + col);
 }

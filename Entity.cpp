@@ -10,19 +10,32 @@ Entity::~Entity() {
 
 }
 
-Entity::Entity(int birth, int longevity, const sf::Vector2i &position) : birth(birth), longevity(longevity),
-                                                                         position(position) {}
+Entity::Entity(int birth, int longevity, const sf::Vector2i &position) : birth(birth), longevity(longevity) {}
 
-Entity::Entity(int longevity, const sf::Vector2i &position) : longevity(longevity), position(position) {}
+Entity::Entity(int longevity, const sf::Vector2i &position) : longevity(longevity) {}
 
 Type Entity::getEntityType() const {
     return entityType;
 }
 
-const sf::Vector2i &Entity::getPosition() const {
-    return position;
+int Entity::getBirth() const {
+    return birth;
 }
 
-void Entity::setPosition(const sf::Vector2i &position) {
-    Entity::position = position;
+int Entity::getLongevity() const {
+    return longevity;
 }
+
+int Entity::getAge() const {
+    return age;
+}
+
+std::string Entity::toString() {
+    switch (this->entityType) {
+        case HumanEntity:
+            return "Human";
+        case ZombieEntity:
+            return "Zombie";
+    }
+}
+

@@ -16,10 +16,15 @@ private:
 
     void initVariables();
     void initCell();
+    void updateColor();
+
+    sf::Vector2i lookAround(const std::vector<Cell*>& neighborhood);
 
     //Entidade que está na célula (ZombieEntity, HumanEntity)
     Entity *entity;
 
+    /**Matrix position of the cell*/
+    sf::Vector2i position;
 public:
     Cell();
 
@@ -29,7 +34,7 @@ public:
 
     virtual ~Cell();
 
-    void updateCell();
+    void updateCell(const std::vector<Cell*>& neighborhood);
     void render(sf::RenderTarget& target);
 
     bool isEmpty() const;
@@ -37,6 +42,14 @@ public:
     /*Getter Setter*/
     Entity *getEntity() const;
     void setEntity(Entity *entity);
+
+    const sf::Vector2i &getPos() const;
+
+    void setPos(const sf::Vector2i &position);
+
+    /**FOR DEBUG*/
+    std::string toString();
+
 };
 
 

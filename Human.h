@@ -6,10 +6,9 @@
 #define MPI_ZOMBIE_APOCALYPSE_HUMAN_H
 
 #include "Entity.h"
+#include "Cell.h"
 
 class Human : public Entity {
-private:
-
 public:
     Human();
 
@@ -21,7 +20,11 @@ public:
 
     Entity *reproduction() override;
 
-    bool isDead() override;
+    bool isDead(sf::Vector2i entitiesAround) override;
+
+    Cell *move(std::vector<Cell *> cellsAround) override;
+
+    Entity *copy() override;
 };
 
 

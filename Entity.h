@@ -7,27 +7,34 @@
 
 
 #include <SFML/System.hpp>
+#include <vector>
 
-enum Type {HumanEntity = 1, ZombieEntity = -1};
+enum Type {
+    HumanEntity = 1, ZombieEntity = -1
+};
+
+class Cell;
 
 class Entity {
 protected:
     int birth;
     int longevity;
-    int age;
+    int age = 0;
     int reproductionAge;
 
-    sf::Vector2i position;
     Type entityType;
 
 public:
-    const sf::Vector2i &getPosition() const;
+    virtual Entity* copy() = 0;
 
-    void setPosition(const sf::Vector2i &position);
+    int getBirth() const;
+
+    int getLongevity() const;
+
+    int getAge() const;
 
     Type getEntityType() const;
 
-public:
     Entity();
 
     Entity(int birth, int longevity, const sf::Vector2i &position);
@@ -36,9 +43,13 @@ public:
 
     virtual ~Entity();
 
-    virtual Entity* reproduction() = 0;
+    virtual Entity *reproduction() = 0;
 
-    virtual bool isDead() = 0;
+    virtual bool isDead(sf::Vector2i entitiesAround) = 0;
+
+    virtual Cell *move(std::vector<Cell *> cellsAround) = 0;
+
+    std::string toString();
 };
 
 

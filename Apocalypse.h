@@ -20,9 +20,8 @@ private:
     /*Game control*/
     bool running;
     World *apoWorld;
-    int matrixRow = 4;
-    int matrixColl = 3;
-
+    int matrixRow = 10;
+    int matrixColl = 10;
 
     /*Private Functions*/
     void initVariables();

@@ -10,14 +10,14 @@ Cell::Cell() {
     this->initCell();
 }
 
-Cell::Cell(sf::Vector2f size, Entity* entity) : RectangleShape(size) {
+Cell::Cell(sf::Vector2f size, Entity *entity) : RectangleShape(size) {
     this->entity = entity;
     this->initVariables();
     this->initCell();
 }
 
 
-Cell::Cell(sf::Vector2f pos, sf::Vector2f size, Entity* entity) : RectangleShape(size) {
+Cell::Cell(sf::Vector2f pos, sf::Vector2f size, Entity *entity) : RectangleShape(size) {
     this->entity = entity;
     this->initVariables();
     this->initCell();
@@ -53,8 +53,35 @@ void Cell::initCell() {
     this->setOutlineThickness(1.f);
 }
 
-void Cell::updateCell() {
-    this->setFillColor(this->color);
+sf::Vector2i Cell::lookAround(const std::vector<Cell *> &neighborhood) {
+    int numHumans = 0;
+    int numZombies = 0;
+    for (auto &e: neighborhood) {
+        if (e != nullptr) {
+            if (e->getEntity() != nullptr) {
+                if (e->getEntity()->getEntityType() == Type::HumanEntity) {
+                    ++numHumans;
+                } else {
+                    ++numZombies;
+                }
+            }
+        }
+    }
+    return {numHumans, numZombies};
+}
+
+void Cell::updateCell(const std::vector<Cell *> &neighborhood) {
+    int numH = lookAround(neighborhood).x;
+    int numZ = lookAround(neighborhood).y;
+    this->updateColor();
+    if (this->entity != nullptr) {
+        Cell *cell = this->entity->move(neighborhood);
+        if(cell != nullptr) {
+            cell->setEntity(this->entity->copy());
+            delete this->entity;
+            this->entity = nullptr;
+        }
+    }
 }
 
 void Cell::render(sf::RenderTarget &target) {
@@ -69,16 +96,37 @@ Entity *Cell::getEntity() const {
     return entity;
 }
 
-void Cell::setEntity(Entity *entity) {
-    Cell::entity = entity;
-    switch (this->entity->getEntityType()) {
-        case Type::HumanEntity:
-            this->color = sf::Color::Blue;
-            break;
-        case Type::ZombieEntity:
-            this->color = sf::Color::Red;
-            break;
-        default:
-            break;
+void Cell::updateColor() {
+    if(this->entity != nullptr) {
+        switch (this->entity->getEntityType()) {
+            case Type::HumanEntity:
+                this->color = sf::Color::Blue;
+                break;
+            case Type::ZombieEntity:
+                this->color = sf::Color::Red;
+                break;
+            default:
+                break;
+        }
+    } else {
+        this->color = sf::Color(200, 200, 200, 255);
     }
+    this->setFillColor(this->color);
+}
+
+void Cell::setEntity(Entity *entity) {
+    delete this->entity;
+    this->entity = entity;
+}
+
+const sf::Vector2i &Cell::getPos() const {
+    return position;
+}
+
+void Cell::setPos(const sf::Vector2i &position) {
+    Cell::position = position;
+}
+
+std::string Cell::toString() {
+    return this->entity != nullptr ? this->entity->toString() : "EMPTY";
 }
