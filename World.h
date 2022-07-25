@@ -18,13 +18,17 @@ private:
     int matrixRow;
     int matrixColl;
     sf::Vector2u windowSize;
-    std::vector<Cell*> matrixCells;
+    std::vector<Cell *> matrixCells;
 
     /*Private Functions*/
     void initWorld();
+
     void placeHumans();
+
     void placeZombies();
+
     void initVariables();
+
     bool isEmptyPlace(int index) const;
 
     /*Private variables*/
@@ -34,16 +38,20 @@ public:
     World();
 
     explicit World(int matrixOrder, sf::Vector2u windowSize);
+
     World(int matrixRow, int matrixColl, sf::Vector2u windowSize);
 
     virtual ~World();
 
     void update();
-    void render(sf::RenderTarget& target);
 
-    std::vector<Cell*> getNeighborhood(Cell &cell);
-    std::vector<Cell*> getNeighborhood(int index);
-    std::vector<Cell*> getNeighborhood(int row, int col);
+    void render(sf::RenderTarget &target);
+
+    std::vector<Cell *> getNeighborhood(Cell &cell);
+
+    std::vector<Cell *> getNeighborhood(int index);
+
+    std::vector<Cell *> getNeighborhood(int row, int col);
 };
 
 

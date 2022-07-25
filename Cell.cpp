@@ -76,7 +76,7 @@ void Cell::updateCell(const std::vector<Cell *> &neighborhood) {
     this->updateColor();
     if (this->entity != nullptr) {
         Cell *cell = this->entity->move(neighborhood);
-        if(cell != nullptr) {
+        if (cell != nullptr) {
             cell->setEntity(this->entity->copy());
             delete this->entity;
             this->entity = nullptr;
@@ -97,7 +97,7 @@ Entity *Cell::getEntity() const {
 }
 
 void Cell::updateColor() {
-    if(this->entity != nullptr) {
+    if (this->entity != nullptr) {
         switch (this->entity->getEntityType()) {
             case Type::HumanEntity:
                 this->color = sf::Color::Blue;

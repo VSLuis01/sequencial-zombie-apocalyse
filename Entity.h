@@ -25,7 +25,7 @@ protected:
     Type entityType;
 
 public:
-    virtual Entity* copy() = 0;
+    virtual Entity *copy() = 0;
 
     int getBirth() const;
 

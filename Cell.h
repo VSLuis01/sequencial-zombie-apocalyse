@@ -9,16 +9,18 @@
 #include <SFML/System.hpp>
 #include "Entity.h"
 
-class Cell: public sf::RectangleShape {
+class Cell : public sf::RectangleShape {
 private:
     sf::Color color;
     sf::Color outlineColor;
 
     void initVariables();
+
     void initCell();
+
     void updateColor();
 
-    sf::Vector2i lookAround(const std::vector<Cell*>& neighborhood);
+    sf::Vector2i lookAround(const std::vector<Cell *> &neighborhood);
 
     //Entidade que está na célula (ZombieEntity, HumanEntity)
     Entity *entity;
@@ -28,19 +30,21 @@ private:
 public:
     Cell();
 
-    explicit Cell(sf::Vector2f size, Entity* entity);
+    explicit Cell(sf::Vector2f size, Entity *entity);
 
-    Cell(sf::Vector2f pos, sf::Vector2f size, Entity* entity);
+    Cell(sf::Vector2f pos, sf::Vector2f size, Entity *entity);
 
     virtual ~Cell();
 
-    void updateCell(const std::vector<Cell*>& neighborhood);
-    void render(sf::RenderTarget& target);
+    void updateCell(const std::vector<Cell *> &neighborhood);
+
+    void render(sf::RenderTarget &target);
 
     bool isEmpty() const;
 
     /*Getter Setter*/
     Entity *getEntity() const;
+
     void setEntity(Entity *entity);
 
     const sf::Vector2i &getPos() const;

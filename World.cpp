@@ -108,16 +108,16 @@ std::vector<Cell *> World::getNeighborhood(int index) {
 
     sf::Vector2i topLeft = (posX - 1 >= 0 && posY - 1 >= 0) ? sf::Vector2i(posX - 1, posY - 1) : sf::Vector2i(-1, -1);
     sf::Vector2i topRight = (posX - 1 >= 0 && posY + 1 <= this->matrixColl - 1) ? sf::Vector2i(posX - 1, posY + 1)
-                                                                              : sf::Vector2i(-1, -1);
+                                                                                : sf::Vector2i(-1, -1);
     sf::Vector2i bottomLeft = (posX + 1 <= this->matrixRow - 1 && posY - 1 >= 0) ? sf::Vector2i(posX + 1, posY - 1)
-                                                                               : sf::Vector2i(-1, -1);
+                                                                                 : sf::Vector2i(-1, -1);
     sf::Vector2i bottomRight = (posX + 1 <= this->matrixRow - 1 && posY + 1 <= this->matrixColl - 1) ? sf::Vector2i(
             posX + 1, posY + 1) : sf::Vector2i(-1, -1);
 
     std::vector<sf::Vector2i> cellsPositions{top, bottom, left, right, topLeft, topRight, bottomLeft, bottomRight};
-    std::vector<Cell*> neighborhood;
-    for(auto &e : cellsPositions) {
-        if(e.x != -1) {
+    std::vector<Cell *> neighborhood;
+    for (auto &e: cellsPositions) {
+        if (e.x != -1) {
             int i = e.x * this->matrixColl + e.y;
             neighborhood.push_back(this->matrixCells[i]);
         } else {

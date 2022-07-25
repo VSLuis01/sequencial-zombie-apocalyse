@@ -29,9 +29,9 @@ Entity *Zombie::reproduction() {
 }
 
 Cell *Zombie::move(std::vector<Cell *> cellsAround) {
-    std::vector<Cell*> possibleMoves;
-    for(auto &e: cellsAround) {
-        if(e != nullptr && (e->getEntity() == nullptr || e->getEntity()->getEntityType() == Type::HumanEntity)) {
+    std::vector<Cell *> possibleMoves;
+    for (auto &e: cellsAround) {
+        if (e != nullptr && (e->getEntity() == nullptr || e->getEntity()->getEntityType() == Type::HumanEntity)) {
             possibleMoves.push_back(e);
         }
     }
@@ -39,7 +39,7 @@ Cell *Zombie::move(std::vector<Cell *> cellsAround) {
 }
 
 Entity *Zombie::copy() {
-    auto* entity = new Zombie;
+    auto *entity = new Zombie;
     entity->age = this->age;
     entity->birth = this->birth;
     entity->entityType = this->entityType;

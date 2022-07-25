@@ -13,7 +13,7 @@
 class Apocalypse {
 private:
     //Window
-    sf::RenderWindow* window;
+    sf::RenderWindow *window;
     sf::VideoMode videoMode;
     sf::Event ev;
 
@@ -25,7 +25,9 @@ private:
 
     /*Private Functions*/
     void initVariables();
+
     void initWindow();
+
     void initWorld();
 
 public:
@@ -36,6 +38,7 @@ public:
 
     /*Update objects attributes or something*/
     void update();
+
     /*Listening events*/
     void pollEvents();
 
