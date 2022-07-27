@@ -10,21 +10,23 @@
 
 class Zombie : public Entity {
 private:
-
+    int energy = 5;
 public:
     Zombie();
 
-    Zombie(int birth, int longevity, const sf::Vector2i &position);
+    Zombie(int reproductionAge, int longevity);
 
-    Zombie(int longevity, const sf::Vector2i &position);
+    explicit Zombie(int longevity);
 
     virtual ~Zombie();
-
-    Entity *reproduction() override;
 
     bool isDead(sf::Vector2i entitiesAround) override;
 
     Cell *move(std::vector<Cell *> cellsAround) override;
+
+    Cell *reproduce(std::vector<Cell *> cellsAround) override;
+
+    Entity *reproduce() override;
 
     Entity *copy() override;
 };

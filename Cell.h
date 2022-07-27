@@ -20,6 +20,8 @@ private:
 
     void updateColor();
 
+    void destroyEntity();
+
     sf::Vector2i lookAround(const std::vector<Cell *> &neighborhood);
 
     //Entidade que está na célula (ZombieEntity, HumanEntity)
@@ -45,14 +47,13 @@ public:
     /*Getter Setter*/
     Entity *getEntity() const;
 
-    void setEntity(Entity *entity);
+    void placeEntity(Entity* entity);
+
+    void placeEntity(Entity* entity, sf::Color color);
 
     const sf::Vector2i &getPos() const;
 
     void setPos(const sf::Vector2i &position);
-
-    /**FOR DEBUG*/
-    std::string toString();
 
 };
 

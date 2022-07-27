@@ -31,6 +31,7 @@ private:
     void initWorld();
 
 public:
+    inline static bool roll = false;
 
     Apocalypse();
 

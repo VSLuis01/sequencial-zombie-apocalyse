@@ -12,17 +12,19 @@ class Human : public Entity {
 public:
     Human();
 
-    Human(int birth, int longevity, const sf::Vector2i &position);
+    Human(int reproductionAge, int longevity);
 
-    Human(int longevity, const sf::Vector2i &position);
+    explicit Human(int longevity);
 
     virtual ~Human();
-
-    Entity *reproduction() override;
 
     bool isDead(sf::Vector2i entitiesAround) override;
 
     Cell *move(std::vector<Cell *> cellsAround) override;
+
+    Cell *reproduce(std::vector<Cell *> cellsAround) override;
+
+    Entity *reproduce() override;
 
     Entity *copy() override;
 };

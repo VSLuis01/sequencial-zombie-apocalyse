@@ -4,7 +4,7 @@
 
 #include "Human.h"
 
-Human::Human() {
+Human::Human() : Entity(2, 10) {
     this->entityType = Type::HumanEntity;
 }
 
@@ -12,11 +12,11 @@ Human::~Human() {
 
 }
 
-Human::Human(int birth, int longevity, const sf::Vector2i &position) : Entity(birth, longevity, position) {
+Human::Human(int reproductionAge, int longevity) : Entity(reproductionAge, longevity) {
     this->entityType = Type::HumanEntity;
 }
 
-Human::Human(int longevity, const sf::Vector2i &position) : Entity(longevity, position) {
+Human::Human(int longevity) : Entity(longevity) {
     this->entityType = Type::HumanEntity;
 }
 
@@ -27,15 +27,12 @@ bool Human::isDead(sf::Vector2i entitiesAround) {
 
     if (numZ >= 5) return true;
     if (numH == 8) return true;
+    if (this->age > this->longevity) return true;
 
-    this->age++;
+    this->age += 1;
     return false;
 }
 
-Entity *Human::reproduction() {
-
-    return nullptr;
-}
 
 Cell *Human::move(std::vector<Cell *> cellsAround) {
     std::vector<Cell *> possibleMoves;
@@ -44,16 +41,28 @@ Cell *Human::move(std::vector<Cell *> cellsAround) {
             possibleMoves.push_back(e);
         }
     }
-    return !possibleMoves.empty() ? possibleMoves[std::rand() % possibleMoves.size()] : nullptr;
+    return !possibleMoves.empty() ? possibleMoves[rand() % possibleMoves.size()] : nullptr;
 }
 
 Entity *Human::copy() {
-    auto *entity = new Human;
-    entity->age = this->age;
-    entity->birth = this->birth;
-    entity->entityType = this->entityType;
-    entity->longevity = this->longevity;
-    entity->reproductionAge = this->reproductionAge;
+    return new Human(*this);
+}
+
+Entity *Human::reproduce() {
+    auto *entity = new Human(*this);
+    entity->age = 0;
+    this->age = 0;
     return entity;
+}
+
+Cell *Human::reproduce(std::vector<Cell *> cellsAround) {
+    std::vector<Cell *> possibleMoves;
+    for (auto &e: cellsAround) {
+        if (e != nullptr && e->getEntity() == nullptr) {
+            possibleMoves.push_back(e);
+        }
+    }
+    int randIndex = rand() % possibleMoves.size();
+    return !possibleMoves.empty() ? possibleMoves[randIndex] : nullptr;
 }
 

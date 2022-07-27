@@ -31,6 +31,7 @@ World::~World() {
 void World::initVariables() {
     this->numHumans = static_cast<int>((float) (this->matrixRow * this->matrixColl) * 0.50f);
     this->numZombies = static_cast<int>((float) (this->matrixRow * this->matrixColl) * 0.25);
+    this->it = 0;
 }
 
 void World::initWorld() {
@@ -61,7 +62,7 @@ void World::placeHumans() {
 
         int index = randX * this->matrixColl + randY;
         if (this->isEmptyPlace(index)) {
-            this->matrixCells[index]->setEntity(new Human);
+            this->matrixCells[index]->placeEntity(new Human, sf::Color(rand() % 256, rand() % 256, rand() % 256, 255));
             --humans;
         }
     }
@@ -75,7 +76,7 @@ void World::placeZombies() {
 
         int index = randX * this->matrixColl + randY;
         if (this->isEmptyPlace(index)) {
-            this->matrixCells[index]->setEntity(new Zombie);
+            this->matrixCells[index]->placeEntity(new Zombie, sf::Color(rand() % 256, rand() % 256, rand() % 256, 255));
             --zombies;
         }
     }
@@ -86,9 +87,9 @@ bool World::isEmptyPlace(int index) const {
 }
 
 void World::update() {
-    for (auto &cell: this->matrixCells) {
-        cell->updateCell(this->getNeighborhood(*cell));
-    }
+    this->matrixCells[it]->updateCell(this->getNeighborhood(*this->matrixCells[it]));
+    this->it++;
+    if (this->it >= this->matrixCells.size()) this->it = 0;
 }
 
 void World::render(sf::RenderTarget &target) {
@@ -102,17 +103,23 @@ std::vector<Cell *> World::getNeighborhood(int index) {
     int posY = (index) % this->matrixColl;
 
     sf::Vector2i top = posX - 1 >= 0 ? sf::Vector2i(posX - 1, posY) : sf::Vector2i(this->matrixRow - 1, posY);
+
     sf::Vector2i bottom = posX + 1 <= this->matrixRow - 1 ? sf::Vector2i(posX + 1, posY) : sf::Vector2i(0, posY);
+
     sf::Vector2i left = posY - 1 >= 0 ? sf::Vector2i(posX, posY - 1) : sf::Vector2i(posX, this->matrixColl - 1);
+
     sf::Vector2i right = posY + 1 <= this->matrixColl - 1 ? sf::Vector2i(posX, posY + 1) : sf::Vector2i(posX, 0);
 
     sf::Vector2i topLeft = (posX - 1 >= 0 && posY - 1 >= 0) ? sf::Vector2i(posX - 1, posY - 1) : sf::Vector2i(-1, -1);
-    sf::Vector2i topRight = (posX - 1 >= 0 && posY + 1 <= this->matrixColl - 1) ? sf::Vector2i(posX - 1, posY + 1)
-                                                                                : sf::Vector2i(-1, -1);
-    sf::Vector2i bottomLeft = (posX + 1 <= this->matrixRow - 1 && posY - 1 >= 0) ? sf::Vector2i(posX + 1, posY - 1)
-                                                                                 : sf::Vector2i(-1, -1);
-    sf::Vector2i bottomRight = (posX + 1 <= this->matrixRow - 1 && posY + 1 <= this->matrixColl - 1) ? sf::Vector2i(
-            posX + 1, posY + 1) : sf::Vector2i(-1, -1);
+
+    sf::Vector2i topRight = (posX - 1 >= 0 && posY + 1 <= this->matrixColl - 1) ?
+                            sf::Vector2i(posX - 1, posY + 1) : sf::Vector2i(-1, -1);
+
+    sf::Vector2i bottomLeft = (posX + 1 <= this->matrixRow - 1 && posY - 1 >= 0) ?
+                              sf::Vector2i(posX + 1, posY - 1) : sf::Vector2i(-1, -1);
+
+    sf::Vector2i bottomRight = (posX + 1 <= this->matrixRow - 1 && posY + 1 <= this->matrixColl - 1) ?
+                               sf::Vector2i(posX + 1, posY + 1) : sf::Vector2i(-1, -1);
 
     std::vector<sf::Vector2i> cellsPositions{top, bottom, left, right, topLeft, topRight, bottomLeft, bottomRight};
     std::vector<Cell *> neighborhood;

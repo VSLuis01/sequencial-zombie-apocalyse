@@ -44,6 +44,10 @@ void Apocalypse::pollEvents() {
                 if (this->ev.key.code == sf::Keyboard::Escape) {
                     this->window->close();
                     this->running = false;
+                } else if(this->ev.key.code == sf::Keyboard::Space) {
+                    if(!Apocalypse::roll)
+                        Apocalypse::roll = true;
+                    else Apocalypse::roll = false;
                 }
                 break;
             default:
@@ -54,7 +58,8 @@ void Apocalypse::pollEvents() {
 
 void Apocalypse::update() {
     this->pollEvents();
-    this->apoWorld->update();
+    if(Apocalypse::roll)
+        this->apoWorld->update();
 }
 
 void Apocalypse::render() {

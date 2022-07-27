@@ -10,16 +10,20 @@ Entity::~Entity() {
 
 }
 
-Entity::Entity(int birth, int longevity, const sf::Vector2i &position) : birth(birth), longevity(longevity) {}
+Entity::Entity(int reproductionAge, int longevity) : reproductionAge(reproductionAge), longevity(longevity) {
+    this->shape.setSize(sf::Vector2f(20.f, 20.f));
+    this->shape.setOutlineColor(sf::Color::Black);
+    this->shape.setOutlineThickness(2.f);
+}
 
-Entity::Entity(int longevity, const sf::Vector2i &position) : longevity(longevity) {}
+Entity::Entity(int longevity) : longevity(longevity) {}
 
 Type Entity::getEntityType() const {
     return entityType;
 }
 
 int Entity::getBirth() const {
-    return birth;
+    return reproductionAge;
 }
 
 int Entity::getLongevity() const {
@@ -30,12 +34,7 @@ int Entity::getAge() const {
     return age;
 }
 
-std::string Entity::toString() {
-    switch (this->entityType) {
-        case HumanEntity:
-            return "Human";
-        case ZombieEntity:
-            return "Zombie";
-    }
+bool Entity::canReproduce() const {
+    return this->age > this->reproductionAge;
 }
 

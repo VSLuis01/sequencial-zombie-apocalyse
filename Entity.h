@@ -7,6 +7,8 @@
 
 
 #include <SFML/System.hpp>
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
 #include <vector>
 
 enum Type {
@@ -17,7 +19,6 @@ class Cell;
 
 class Entity {
 protected:
-    int birth;
     int longevity;
     int age = 0;
     int reproductionAge;
@@ -25,7 +26,7 @@ protected:
     Type entityType;
 
 public:
-    virtual Entity *copy() = 0;
+    sf::RectangleShape shape;
 
     int getBirth() const;
 
@@ -35,21 +36,25 @@ public:
 
     Type getEntityType() const;
 
+    bool canReproduce() const;
+
     Entity();
 
-    Entity(int birth, int longevity, const sf::Vector2i &position);
+    Entity(int reproductionAge, int longevity);
 
-    Entity(int longevity, const sf::Vector2i &position);
+    Entity(int longevity);
 
     virtual ~Entity();
 
-    virtual Entity *reproduction() = 0;
+    virtual Entity *copy() = 0;
+
+    virtual Cell* reproduce(std::vector<Cell *> cellsAround) = 0;
+
+    virtual Entity* reproduce() = 0;
 
     virtual bool isDead(sf::Vector2i entitiesAround) = 0;
 
     virtual Cell *move(std::vector<Cell *> cellsAround) = 0;
-
-    std::string toString();
 };
 
 

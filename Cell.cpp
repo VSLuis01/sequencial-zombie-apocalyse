@@ -73,19 +73,55 @@ sf::Vector2i Cell::lookAround(const std::vector<Cell *> &neighborhood) {
 void Cell::updateCell(const std::vector<Cell *> &neighborhood) {
     int numH = lookAround(neighborhood).x;
     int numZ = lookAround(neighborhood).y;
-    this->updateColor();
+    std::vector<Entity*> possibleRepH;
+    std::vector<Entity*> possibleRepZ;
+
+    bool destroy = false;
+
+
     if (this->entity != nullptr) {
-        Cell *cell = this->entity->move(neighborhood);
-        if (cell != nullptr) {
-            cell->setEntity(this->entity->copy());
-            delete this->entity;
-            this->entity = nullptr;
+        if(!this->entity->isDead(this->lookAround(neighborhood))) {
+            Cell *target = this->entity->move(neighborhood);
+            if (target != nullptr) {
+                target->placeEntity(this->entity->copy());
+                target->updateColor();
+                destroy = true;
+            }
+        } else {
+            destroy = true;
+        }
+    } else {
+        for (auto &e: neighborhood) {
+            if(e != nullptr && e->getEntity() != nullptr) {
+                if(e->getEntity()->getEntityType() == Type::HumanEntity && e->getEntity()->canReproduce()) {
+                    possibleRepH.push_back(e->getEntity());
+                } else if (e->getEntity()->getEntityType() == Type::HumanEntity && e->getEntity()->canReproduce()) {
+                    possibleRepZ.push_back(e->getEntity());
+                }
+            }
+        }
+        if ((numH > 4) && (numH > numZ) && (possibleRepH.size() > 2)) {
+            this->entity = !possibleRepH.empty() ? possibleRepH[rand() % possibleRepH.size()]->reproduce() : nullptr;
+            this->setFillColor(sf::Color::Yellow);
+            return;
+        } else if ((numZ > 4) && (numZ > numH) && (possibleRepZ.size() > 2)) {
+            this->entity = !possibleRepZ.empty() ? possibleRepZ[rand() % possibleRepZ.size()]->reproduce() : nullptr;
+            this->setFillColor(sf::Color::Magenta);
+            return;
         }
     }
+
+    if(destroy) {
+        this->destroyEntity();
+    }
+    this->updateColor();
 }
 
 void Cell::render(sf::RenderTarget &target) {
     target.draw(*this);
+    if (this->entity != nullptr) {
+        target.draw(this->entity->shape);
+    }
 }
 
 bool Cell::isEmpty() const {
@@ -94,6 +130,11 @@ bool Cell::isEmpty() const {
 
 Entity *Cell::getEntity() const {
     return entity;
+}
+
+void Cell::destroyEntity() {
+    delete this->entity;
+    this->entity = nullptr;
 }
 
 void Cell::updateColor() {
@@ -114,9 +155,19 @@ void Cell::updateColor() {
     this->setFillColor(this->color);
 }
 
-void Cell::setEntity(Entity *entity) {
-    delete this->entity;
+void Cell::placeEntity(Entity *entity) {
     this->entity = entity;
+    this->entity->shape.setPosition(
+            this->getPosition().x + 40.f, this->getPosition().y + 40.f);
+}
+
+void Cell::placeEntity(Entity *entity, sf::Color color) {
+    this->entity = entity;
+    this->updateColor();
+    this->entity->shape.setPosition(
+            this->getPosition().x + (this->getGlobalBounds().width / 2) - 10.f,
+            this->getPosition().y + (this->getGlobalBounds().height / 2) - 10.f);
+    this->entity->shape.setFillColor(color);
 }
 
 const sf::Vector2i &Cell::getPos() const {
@@ -125,8 +176,4 @@ const sf::Vector2i &Cell::getPos() const {
 
 void Cell::setPos(const sf::Vector2i &position) {
     Cell::position = position;
-}
-
-std::string Cell::toString() {
-    return this->entity != nullptr ? this->entity->toString() : "EMPTY";
 }

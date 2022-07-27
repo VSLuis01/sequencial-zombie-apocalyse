@@ -34,6 +34,7 @@ private:
     /*Private variables*/
     int numHumans;
     int numZombies;
+    int it;
 public:
     World();
 
