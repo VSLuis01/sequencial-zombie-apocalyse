@@ -4,6 +4,12 @@
 
 #include "Apocalypse.h"
 
+Apocalypse::Apocalypse(int matrixRow, int matrixColl) : matrixRow(matrixRow), matrixColl(matrixColl) {
+    this->initVariables();
+    this->initWindow();
+    this->initWorld();
+}
+
 Apocalypse::Apocalypse() {
     this->initVariables();
     this->initWindow();
@@ -36,11 +42,13 @@ void Apocalypse::initWorld() {
 void Apocalypse::pollEvents() {
     while (this->window->pollEvent(this->ev)) {
         switch (this->ev.type) {
+            /*Checar se janela é fechada*/
             case sf::Event::Closed:
                 this->window->close();
                 this->running = false;
                 break;
             case sf::Event::KeyPressed:
+                /*Fechar janela com ESC*/
                 if (this->ev.key.code == sf::Keyboard::Escape) {
                     this->window->close();
                     this->running = false;

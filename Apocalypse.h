@@ -10,30 +10,36 @@
 #include <SFML/Graphics.hpp>
 #include "World.h"
 
+/**
+ * Essa classe representa a Janela do jogo.
+ * Aqui é definido qual será as dimensões da matrix MxN
+ */
 class Apocalypse {
 private:
     //Window
-    sf::RenderWindow *window;
+    sf::RenderWindow *window; /*Window*/
     sf::VideoMode videoMode;
-    sf::Event ev;
+    sf::Event ev; /*Listener de eventos*/
 
     /*Game control*/
-    bool running;
-    World *apoWorld;
-    int matrixRow = 10;
-    int matrixColl = 10;
+    bool running; /*Controle se o jogo está rodando*/
+    World *apoWorld; /*Mundo apocaliptico*/
+    int matrixRow;
+    int matrixColl;
 
     /*Private Functions*/
-    void initVariables();
+    void initVariables(); /*Inicia variaveis da classe*/
 
-    void initWindow();
+    void initWindow(); /*Inicia atributos da Janela*/
 
-    void initWorld();
+    void initWorld(); /*Inicia mundo apocaliptico*/
 
 public:
-    inline static bool roll = false;
+    inline static bool roll = false; /*Controle para pausar e despausar o mundo*/
 
     Apocalypse();
+
+    Apocalypse(int matrixRow, int matrixColl);
 
     virtual ~Apocalypse();
 

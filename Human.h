@@ -8,6 +8,9 @@
 #include "Entity.h"
 #include "Cell.h"
 
+/**
+ * Classe que representa uma entidade HUMANO
+ */
 class Human : public Entity {
 public:
     Human();
@@ -18,15 +21,34 @@ public:
 
     virtual ~Human();
 
+    /**
+     * Verifica se o humano morreu de acordo com suas regras
+     * @param entitiesAround entidades ao redor do humano
+     * @return true caso humano morreu, false caso contrário
+     */
     bool isDead(sf::Vector2i entitiesAround) override;
 
+    /**
+     * Função de movimentação do humano
+     * @param cellsAround possíveis células para se movimento
+     * @return Um ponteiro para uma célula que vai se movimentar ou nullptr caso não há movimento
+     */
     Cell *move(std::vector<Cell *> cellsAround) override;
+
 
     Cell *reproduce(std::vector<Cell *> cellsAround) override;
 
-    Entity *reproduce() override;
-
+    /**
+     * Cópia da célula humano, porém com outro endereço de memória
+     * @return cópia da entidade
+     */
     Entity *copy() override;
+
+    /**
+     * Cópia da célula humano, todavia a idade das entidades é resetada para 0.
+     * @return cópia da entidade
+     */
+    Entity *reproduce() override;
 };
 
 
