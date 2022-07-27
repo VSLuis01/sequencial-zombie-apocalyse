@@ -119,9 +119,9 @@ void Cell::updateCell(const std::vector<Cell *> &neighborhood) {
 
 void Cell::render(sf::RenderTarget &target) {
     target.draw(*this);
-    if (this->entity != nullptr) {
-        target.draw(this->entity->shape);
-    }
+//    if (this->entity != nullptr) {
+//        target.draw(this->entity->shape);
+//    }
 }
 
 bool Cell::isEmpty() const {
@@ -158,7 +158,8 @@ void Cell::updateColor() {
 void Cell::placeEntity(Entity *entity) {
     this->entity = entity;
     this->entity->shape.setPosition(
-            this->getPosition().x + 40.f, this->getPosition().y + 40.f);
+            this->getPosition().x + (this->getGlobalBounds().width / 2) - 10.f,
+            this->getPosition().y + (this->getGlobalBounds().height / 2) - 10.f);
 }
 
 void Cell::placeEntity(Entity *entity, sf::Color color) {

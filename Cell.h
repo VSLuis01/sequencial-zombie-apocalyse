@@ -9,26 +9,50 @@
 #include <SFML/System.hpp>
 #include "Entity.h"
 
+/**
+ * Está classe representa uma célula no mundo apocaliptico
+ * Uma célula pode assumir 3 estados:
+ * Estado 1: Zombie alocado na célula
+ * Estado 2: Humano alocado na célula
+ * Estado 3: Célula vazia
+ */
 class Cell : public sf::RectangleShape {
 private:
     sf::Color color;
     sf::Color outlineColor;
 
+    /**
+     * Inicia cor da célula
+     */
     void initVariables();
 
+    /**
+     * Inicia atributos graficos da célula
+     */
     void initCell();
 
+    /**
+     * Atualiza a cor da célula
+     * Azul -> Humano
+     * Vermelho -> Zombie
+     */
     void updateColor();
 
+    /**
+     * Destroi a entidade alocada na célula
+     */
     void destroyEntity();
 
+    /**
+     * Está função analisa em volta da célula e retorna quantas entidades está em volta da entidade
+     * @param neighborhood
+     * @return Vector2i.x é a quantidade de Humanos em volta e Vector2i.y é a quantidade de Zombies
+     */
     sf::Vector2i lookAround(const std::vector<Cell *> &neighborhood);
 
-    //Entidade que está na célula (ZombieEntity, HumanEntity)
-    Entity *entity;
+    Entity *entity; /*Entidade atribuida a esta célula*/
 
-    /**Matrix position of the cell*/
-    sf::Vector2i position;
+    sf::Vector2i position; /*Matrix position of the cell*/
 public:
     Cell();
 
@@ -47,12 +71,30 @@ public:
     /*Getter Setter*/
     Entity *getEntity() const;
 
+    /**
+     * Aloca uma entidade na celula
+     * @param entity entidade que será alocada a corrente célula
+     */
     void placeEntity(Entity* entity);
 
+    /**
+     * Aloca uma entidade na célula e adiciona uma cor ao retangulo central da célula.
+     * Está função só existe para propósitos de depuração
+     * @param entity entidade que será alocada na corrente célula
+     * @param color cor do retangulo central
+     */
     void placeEntity(Entity* entity, sf::Color color);
 
+    /**
+     * Retorna a posição da matriz da célula, ou seja, posição x,y
+     * @return Posição da matriz
+     */
     const sf::Vector2i &getPos() const;
 
+    /**
+     * Atribui uma posição da matriz na célula
+     * @param position posicao da celula na matriz
+     */
     void setPos(const sf::Vector2i &position);
 
 };

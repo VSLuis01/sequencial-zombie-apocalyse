@@ -87,9 +87,14 @@ bool World::isEmptyPlace(int index) const {
 }
 
 void World::update() {
+
     this->matrixCells[it]->updateCell(this->getNeighborhood(*this->matrixCells[it]));
     this->it++;
     if (this->it >= this->matrixCells.size()) this->it = 0;
+
+//    for (auto &cell: this->matrixCells) {
+//        cell->updateCell(this->getNeighborhood(*cell));
+//    }
 }
 
 void World::render(sf::RenderTarget &target) {
