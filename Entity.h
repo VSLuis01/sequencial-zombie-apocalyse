@@ -31,6 +31,8 @@ protected:
     Type entityType; /*Tipo da entidade: 1 -> Human, -1 -> Zombie*/
 
 public:
+    bool isChild = false;
+
     sf::RectangleShape shape; /*Retangulo que aparece no centro de cada célula. Esse atributo só possui propósitos de depuração*/
 
     int getBirth() const;

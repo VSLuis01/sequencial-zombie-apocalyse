@@ -30,7 +30,8 @@ Cell::~Cell() {
 
 void Cell::initVariables() {
     if (this->entity == nullptr) {
-        this->color = sf::Color(200, 200, 200, 255);
+//        this->color = sf::Color(200, 200, 200, 255);
+        this->color = sf::Color::Black;
     } else {
         switch (this->entity->getEntityType()) {
             case Type::HumanEntity:
@@ -95,7 +96,7 @@ void Cell::updateCell(const std::vector<Cell *> &neighborhood) {
             if(e != nullptr && e->getEntity() != nullptr) {
                 if(e->getEntity()->getEntityType() == Type::HumanEntity && e->getEntity()->canReproduce()) {
                     possibleRepH.push_back(e->getEntity());
-                } else if (e->getEntity()->getEntityType() == Type::HumanEntity && e->getEntity()->canReproduce()) {
+                } else if (e->getEntity()->getEntityType() == Type::ZombieEntity && e->getEntity()->canReproduce()) {
                     possibleRepZ.push_back(e->getEntity());
                 }
             }
@@ -106,7 +107,7 @@ void Cell::updateCell(const std::vector<Cell *> &neighborhood) {
             return;
         } else if ((numZ > 4) && (numZ > numH) && (possibleRepZ.size() > 2)) {
             this->entity = !possibleRepZ.empty() ? possibleRepZ[rand() % possibleRepZ.size()]->reproduce() : nullptr;
-            this->setFillColor(sf::Color::Magenta);
+            this->setFillColor(sf::Color::White);
             return;
         }
     }
@@ -139,18 +140,21 @@ void Cell::destroyEntity() {
 
 void Cell::updateColor() {
     if (this->entity != nullptr) {
-        switch (this->entity->getEntityType()) {
-            case Type::HumanEntity:
-                this->color = sf::Color::Blue;
-                break;
-            case Type::ZombieEntity:
-                this->color = sf::Color::Red;
-                break;
-            default:
-                break;
+        if (!this->entity->isChild) {
+            switch (this->entity->getEntityType()) {
+                case Type::HumanEntity:
+                    this->color = sf::Color::Blue;
+                    break;
+                case Type::ZombieEntity:
+                    this->color = sf::Color::Red;
+                    break;
+                default:
+                    break;
+            }
         }
     } else {
-        this->color = sf::Color(200, 200, 200, 255);
+//        this->color = sf::Color(200, 200, 200, 255);
+        this->color = sf::Color::Black;
     }
     this->setFillColor(this->color);
 }

@@ -51,6 +51,7 @@ Entity *Human::copy() {
 Entity *Human::reproduce() {
     auto *entity = new Human(*this);
     entity->age = 0;
+    entity->isChild = true;
     this->age = 0;
     return entity;
 }

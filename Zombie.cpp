@@ -40,13 +40,18 @@ Cell *Zombie::move(std::vector<Cell *> cellsAround) {
             possibleMoves.push_back(e);
         }
     }
-    /**TODO Melhorar esse negócio aqui*/
-    int randIndex = !possibleMoves.empty() ? std::rand() % possibleMoves.size() : 0;
-    if (possibleMoves[randIndex]->getEntity() != nullptr &&
-        possibleMoves[randIndex]->getEntity()->getEntityType() == Type::HumanEntity) this->energy++;
-    else this->energy--;
 
-    return !possibleMoves.empty() ? possibleMoves[randIndex] : nullptr;
+
+    int randIndex;
+    if(!possibleMoves.empty()) {
+        randIndex = rand() % possibleMoves.size();
+        if (possibleMoves[randIndex]->getEntity() != nullptr &&
+            possibleMoves[randIndex]->getEntity()->getEntityType() == Type::HumanEntity) this->energy++;
+        else this->energy--;
+        return possibleMoves[randIndex];
+    }
+
+    return nullptr;
 }
 
 Entity *Zombie::copy() {
@@ -56,6 +61,7 @@ Entity *Zombie::copy() {
 Entity *Zombie::reproduce() {
     auto *entity = new Zombie(*this);
     entity->age = 0;
+    entity->isChild = true;
     this->age = 0;
     return entity;
 }
