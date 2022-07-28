@@ -71,7 +71,7 @@ void Apocalypse::update() {
 }
 
 void Apocalypse::render() {
-    this->window->clear(sf::Color::White);
+    this->window->clear(sf::Color::Black);
 
     this->apoWorld->render(*this->window);
 
