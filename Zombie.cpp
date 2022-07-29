@@ -6,14 +6,17 @@
 
 Zombie::Zombie() : Entity(3, 20) {
     this->entityType = Type::ZombieEntity;
+    this->energy = this->energyMax;
 }
 
 Zombie::Zombie(int reproductionAge, int longevity) : Entity(reproductionAge, longevity) {
     this->entityType = Type::ZombieEntity;
+    this->energy = this->energyMax;
 }
 
 Zombie::Zombie(int longevity) : Entity(longevity) {
     this->entityType = Type::ZombieEntity;
+    this->energy = this->energyMax;
 }
 
 Zombie::~Zombie() {
@@ -73,10 +76,10 @@ Entity *Zombie::copy() {
 Entity *Zombie::reproduce() {
     auto *entity = new Zombie(*this);
     entity->age = 0;
-    entity->energy = 5;
+    entity->energy = entity->energyMax;
     entity->isChild = true;
-    this->energy = 5;
     this->age = 0;
+    this->energy = this->energyMax;
     return entity;
 }
 

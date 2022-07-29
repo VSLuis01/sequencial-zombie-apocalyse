@@ -13,7 +13,8 @@
  */
 class Zombie : public Entity {
 private:
-    int energy = 5;
+    int energyMax = 8;
+    int energy;
 public:
     Zombie();
 

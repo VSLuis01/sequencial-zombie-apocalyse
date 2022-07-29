@@ -59,7 +59,7 @@ void World::initWorld() const {
             World::matrixCells.push_back(new Cell(sf::Vector2f(x, y), nullptr));
 
             World::matrixCells[k]->setPosition((float) j * World::matrixCells[k]->getSize().x,
-                                              (float) i * World::matrixCells[k]->getSize().y);
+                                               (float) i * World::matrixCells[k]->getSize().y);
             World::matrixCells[k]->setPos(sf::Vector2i(i, j));
             ++k;
         }
@@ -88,7 +88,8 @@ void World::placeZombies() const {
 
         int index = randX * World::matrixColl + randY;
         if (World::isEmptyPlace(index)) {
-            World::matrixCells[index]->placeEntity(new Zombie, sf::Color(rand() % 256, rand() % 256, rand() % 256, 255));
+            World::matrixCells[index]->placeEntity(new Zombie,
+                                                   sf::Color(rand() % 256, rand() % 256, rand() % 256, 255));
             --zombies;
         }
     }
@@ -102,21 +103,27 @@ void World::update() {
 
     /*Atualiza célula por célula, Tem uma visao mais detalhada do movimento de casa entidade
      * É mais lento*/
-    World::matrixCells[it]->updateCell(this->flipGeneration);
-    this->it++;
-    if (this->it >= World::matrixCells.size()) {
-        this->it = 0;
-        for (auto &e: World::matrixCells) {
-            if(e->getEntity() != nullptr)
-                ++*e->getEntity();
-        }
-    }
+//    World::matrixCells[it]->updateCell(this->flipGeneration);
+//    this->it++;
+//    if (this->it >= World::matrixCells.size()) {
+//        this->it = 0;
+//        for (auto &e: World::matrixCells) {
+//            if(e->getEntity() != nullptr)
+//                ++*e->getEntity();
+//        }
+//    }
 
     /*Atualiza todas as celulas, Tem visao menos detalhada do movimento de cada célula.
      * É mais rápido*/
-//    for (auto &cell: World::matrixCells) {
-//        cell->updateCell();
-//    }
+    for (auto &cell: World::matrixCells) {
+        cell->updateCell();
+    }
+    for (auto &e: World::matrixCells) {
+        if (e->getEntity() != nullptr)
+            ++*e->getEntity();
+    }
+    this->gen++;
+    std::cout << this->gen << "\n";
 }
 
 void World::render(sf::RenderTarget &target) {

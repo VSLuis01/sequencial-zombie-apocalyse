@@ -18,6 +18,7 @@
  */
 class World {
 private:
+    int gen = 0;
     static int matrixRow; /*LInhas da matriz*/
     static int matrixColl; /*Colunas da matriz*/
     static std::vector<Cell *> matrixCells;

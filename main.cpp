@@ -3,7 +3,7 @@
 
 int main() {
     srand(static_cast<unsigned>(time(nullptr)));
-    Apocalypse game(10, 10);
+    Apocalypse game(200, 200);
 
     while (game.isRunning()) {
         game.update();

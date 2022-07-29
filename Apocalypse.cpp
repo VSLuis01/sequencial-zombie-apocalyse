@@ -32,7 +32,7 @@ void Apocalypse::initWindow() {
     this->window = new sf::RenderWindow(this->videoMode, "MPI-ZombieEntity-Apocalypse",
                                         sf::Style::Titlebar | sf::Style::Close);
 
-    this->window->setFramerateLimit(60);
+//    this->window->setFramerateLimit(60);
 }
 
 void Apocalypse::initWorld() {

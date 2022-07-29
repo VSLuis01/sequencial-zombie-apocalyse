@@ -39,7 +39,10 @@ bool Human::isDead(const std::vector<Cell *>& cellsAround) {
     }
 
     if (numZ >= 5) return true;
-    if (numH == 8) return true;
+    if (numH == 8) {
+         int i = 0;
+        return true;
+    }
     if (this->age > this->longevity) return true;
 
     return false;

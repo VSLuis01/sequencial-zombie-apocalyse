@@ -56,7 +56,7 @@ public:
 
     virtual ~Cell();
 
-    void updateCell(const bool flipGeneration);
+    void updateCell();
 
     void render(sf::RenderTarget &target);
 

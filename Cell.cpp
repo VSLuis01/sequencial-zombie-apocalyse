@@ -54,7 +54,7 @@ void Cell::initCell() {
     this->setOutlineThickness(1.f);
 }
 
-void Cell::updateCell(const bool flipGeneration) {
+void Cell::updateCell() {
     std::vector<Cell *> neighborhood = World::getNeighborhood(*this);
 
     std::vector<Entity*> possibleRepH;
@@ -63,7 +63,6 @@ void Cell::updateCell(const bool flipGeneration) {
     bool destroy = false;
 
     if (this->entity != nullptr) {
-        if (flipGeneration) ++*this->entity;
         Cell *son = this->entity->possibleReproducer(neighborhood);
         if (son != nullptr && this->entity->reproduceRule(World::getNeighborhood(*son))) {
             son->placeEntity(this->entity->reproduce());
