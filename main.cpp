@@ -3,12 +3,12 @@
 
 int main() {
     srand(static_cast<unsigned>(time(nullptr)));
-    Apocalypse game(30, 30);
+    Apocalypse game(10, 10);
 
     while (game.isRunning()) {
         game.update();
         game.render();
-        sleep(1);
+//        sleep(1);
     }
 
     return 0;

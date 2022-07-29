@@ -54,34 +54,22 @@ void Cell::initCell() {
     this->setOutlineThickness(1.f);
 }
 
-sf::Vector2i Cell::lookAround(const std::vector<Cell *> &neighborhood) {
-    int numHumans = 0;
-    int numZombies = 0;
-    for (auto &e: neighborhood) {
-        if (e != nullptr) {
-            if (e->getEntity() != nullptr) {
-                if (e->getEntity()->getEntityType() == Type::HumanEntity) {
-                    ++numHumans;
-                } else {
-                    ++numZombies;
-                }
-            }
-        }
-    }
-    return {numHumans, numZombies};
-}
+void Cell::updateCell(const bool flipGeneration) {
+    std::vector<Cell *> neighborhood = World::getNeighborhood(*this);
 
-void Cell::updateCell(const std::vector<Cell *> &neighborhood) {
-    int numH = lookAround(neighborhood).x;
-    int numZ = lookAround(neighborhood).y;
     std::vector<Entity*> possibleRepH;
     std::vector<Entity*> possibleRepZ;
 
     bool destroy = false;
 
-
     if (this->entity != nullptr) {
-        if(!this->entity->isDead(this->lookAround(neighborhood))) {
+        if (flipGeneration) ++*this->entity;
+        Cell *son = this->entity->possibleReproducer(neighborhood);
+        if (son != nullptr && this->entity->reproduceRule(World::getNeighborhood(*son))) {
+            son->placeEntity(this->entity->reproduce());
+            son->updateColor();
+        }
+        if(!this->entity->isDead(neighborhood)) {
             Cell *target = this->entity->move(neighborhood);
             if (target != nullptr) {
                 target->placeEntity(this->entity->copy());
@@ -91,7 +79,9 @@ void Cell::updateCell(const std::vector<Cell *> &neighborhood) {
         } else {
             destroy = true;
         }
-    } else {
+    }
+    /*
+    else {
         for (auto &e: neighborhood) {
             if(e != nullptr && e->getEntity() != nullptr) {
                 if(e->getEntity()->getEntityType() == Type::HumanEntity && e->getEntity()->canReproduce()) {
@@ -106,12 +96,12 @@ void Cell::updateCell(const std::vector<Cell *> &neighborhood) {
             this->setFillColor(sf::Color::Yellow);
             return;
         } else if ((numZ > 4) && (numZ > numH) && (possibleRepZ.size() > 2)) {
-            this->entity = !possibleRepZ.empty() ? possibleRepZ[rand() % possibleRepZ.size()]->reproduce() : nullptr;
+            this->entity = !possibleRepZ.empty() ? possibleRepZ[rand() % possibleRepZ.size()]->possibleReproducer() : nullptr;
             this->setFillColor(sf::Color::White);
             return;
         }
     }
-
+    */
     if(destroy) {
         this->destroyEntity();
     }
@@ -150,6 +140,12 @@ void Cell::updateColor() {
                     break;
                 default:
                     break;
+            }
+        } else {
+            if (this->entity->getEntityType() == Type::HumanEntity) {
+                this->color = sf::Color::Yellow;
+            } else {
+                this->color = sf::Color::White;
             }
         }
     } else {

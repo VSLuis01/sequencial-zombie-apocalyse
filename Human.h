@@ -26,17 +26,19 @@ public:
      * @param entitiesAround entidades ao redor do humano
      * @return true caso humano morreu, false caso contrário
      */
-    bool isDead(sf::Vector2i entitiesAround) override;
+    bool isDead(const std::vector<Cell *> &cellsAround) override;
 
     /**
      * Função de movimentação do humano
      * @param cellsAround possíveis células para se movimento
      * @return Um ponteiro para uma célula que vai se movimentar ou nullptr caso não há movimento
      */
-    Cell *move(std::vector<Cell *> cellsAround) override;
+    Cell *move(const std::vector<Cell *> &cellsAround) override;
 
 
-    Cell *reproduce(std::vector<Cell *> cellsAround) override;
+    Cell *possibleReproducer(std::vector<Cell *> cellsAround) override;
+
+    bool reproduceRule(const std::vector<Cell *> &cellsAround) override;
 
     /**
      * Cópia da célula humano, porém com outro endereço de memória

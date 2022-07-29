@@ -34,7 +34,27 @@ int Entity::getAge() const {
     return age;
 }
 
+Entity &Entity::operator++() {
+    this->age += 1;
+    return *this;
+}
+
 bool Entity::canReproduce() const {
-    return this->age > this->reproductionAge;
+    return this->age >= this->reproductionAge;
+}
+
+sf::Vector2i Entity::lookAround(const std::vector<Entity *> &neighborhood) {
+    int numHumans = 0;
+    int numZombies = 0;
+    for (auto &e: neighborhood) {
+        if (e != nullptr) {
+            if (e->getEntityType() == Type::HumanEntity) {
+                ++numHumans;
+            } else {
+                ++numZombies;
+            }
+        }
+    }
+    return {numHumans, numZombies};
 }
 

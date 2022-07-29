@@ -8,6 +8,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include "Entity.h"
+#include "World.h"
 
 /**
  * Está classe representa uma célula no mundo apocaliptico
@@ -43,13 +44,6 @@ private:
      */
     void destroyEntity();
 
-    /**
-     * Está função analisa em volta da célula e retorna quantas entidades está em volta da entidade
-     * @param neighborhood
-     * @return Vector2i.x é a quantidade de Humanos em volta e Vector2i.y é a quantidade de Zombies
-     */
-    sf::Vector2i lookAround(const std::vector<Cell *> &neighborhood);
-
     Entity *entity; /*Entidade atribuida a esta célula*/
 
     sf::Vector2i position; /*Matrix position of the cell*/
@@ -62,7 +56,7 @@ public:
 
     virtual ~Cell();
 
-    void updateCell(const std::vector<Cell *> &neighborhood);
+    void updateCell(const bool flipGeneration);
 
     void render(sf::RenderTarget &target);
 

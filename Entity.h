@@ -31,6 +31,15 @@ protected:
     Type entityType; /*Tipo da entidade: 1 -> Human, -1 -> Zombie*/
 
 public:
+    Entity& operator++();
+
+    /**
+     * Está função analisa em volta da célula e retorna quantas entidades está em volta da entidade
+     * @param neighborhood
+     * @return Vector2i.x é a quantidade de Humanos em volta e Vector2i.y é a quantidade de Zombies
+     */
+    static sf::Vector2i lookAround(const std::vector<Entity *> &neighborhood);
+
     bool isChild = false;
 
     sf::RectangleShape shape; /*Retangulo que aparece no centro de cada célula. Esse atributo só possui propósitos de depuração*/
@@ -67,7 +76,9 @@ public:
      */
     virtual Entity *copy() = 0;
 
-    virtual Cell* reproduce(std::vector<Cell *> cellsAround) = 0;
+    virtual Cell* possibleReproducer(std::vector<Cell *> cellsAround) = 0;
+
+    virtual bool reproduceRule(const std::vector<Cell *> &cellsAround) = 0;
 
     /**
      * Retorna uma cópia da entidade, todavia a idade de ambas Entidades é resetada para 0;
@@ -80,14 +91,14 @@ public:
      * @param entitiesAround Entidades ao redor da corrente entidade
      * @return true caso a entidade morreu, false caso contrário
      */
-    virtual bool isDead(sf::Vector2i entitiesAround) = 0;
+    virtual bool isDead(const std::vector<Cell *>& cellsAround) = 0;
 
     /**
      * Função responsável para verificar se uma célula pode se movimentar
      * @param cellsAround Células ao redor da entidade
      * @return Célula que a entidade vai se movimentar ou nullptr caso não há movimento.
      */
-    virtual Cell *move(std::vector<Cell *> cellsAround) = 0;
+    virtual Cell *move(const std::vector<Cell *> &cellsAround) = 0;
 };
 
 

@@ -21,20 +21,32 @@ Human::Human(int longevity) : Entity(longevity) {
 }
 
 
-bool Human::isDead(sf::Vector2i entitiesAround) {
-    int numH = entitiesAround.x;
-    int numZ = entitiesAround.y;
+bool Human::isDead(const std::vector<Cell *>& cellsAround) {
+    std::vector<Entity *> entitiesAround;
+    for (auto &e : cellsAround) {
+        if (e != nullptr) {
+            entitiesAround.push_back(e->getEntity());
+        }
+    }
+
+    sf::Vector2i entities = Entity::lookAround(entitiesAround);
+    int numH = entities.x;
+    int numZ = entities.y;
+
+    if (this->isChild) {
+        int i = 0;
+        int j = 0;
+    }
 
     if (numZ >= 5) return true;
     if (numH == 8) return true;
     if (this->age > this->longevity) return true;
 
-    this->age += 1;
     return false;
 }
 
 
-Cell *Human::move(std::vector<Cell *> cellsAround) {
+Cell *Human::move(const std::vector<Cell *> &cellsAround) {
     std::vector<Cell *> possibleMoves;
     for (auto &e: cellsAround) {
         if (e != nullptr && e->getEntity() == nullptr) {
@@ -56,14 +68,31 @@ Entity *Human::reproduce() {
     return entity;
 }
 
-Cell *Human::reproduce(std::vector<Cell *> cellsAround) {
-    std::vector<Cell *> possibleMoves;
+Cell *Human::possibleReproducer(std::vector<Cell *> cellsAround) {
+    std::vector<Cell *> possibleRepoCells;
+
     for (auto &e: cellsAround) {
         if (e != nullptr && e->getEntity() == nullptr) {
-            possibleMoves.push_back(e);
+            possibleRepoCells.push_back(e);
         }
     }
-    int randIndex = rand() % possibleMoves.size();
-    return !possibleMoves.empty() ? possibleMoves[randIndex] : nullptr;
+    return !possibleRepoCells.empty() ? possibleRepoCells[rand() % possibleRepoCells.size()] : nullptr;
+}
+
+bool Human::reproduceRule(const std::vector<Cell *> &cellsAround) {
+    std::vector<Entity *> entitiesAround;
+    int numHCanReproduce = 0;
+    for (auto &e : cellsAround) {
+        if(e != nullptr && e->getEntity() != nullptr) {
+            if (e->getEntity()->getEntityType() == Type::HumanEntity && e->getEntity()->canReproduce()) numHCanReproduce++;
+            entitiesAround.push_back(e->getEntity());
+        }
+    }
+
+    int numH = Entity::lookAround(entitiesAround).x;
+    int numZ = Entity::lookAround(entitiesAround).y;
+
+    if((numH >= 4) && (numH > numZ) && (numHCanReproduce >= 3)) return true;
+    return false;
 }
 

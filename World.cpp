@@ -4,18 +4,20 @@
 
 #include "World.h"
 
-World::World(int matrixOrder, sf::Vector2u windowSize) : matrixRow(matrixOrder), matrixColl(matrixOrder),
-                                                         windowSize(windowSize) {
+int World::matrixRow; /*LInhas da matriz*/
+int World::matrixColl; /*Colunas da matriz*/
+std::vector<Cell *> World::matrixCells;
+
+World::World(int matrixOrder, sf::Vector2u windowSize) : windowSize(windowSize) {
+    this->initVariables(matrixOrder);
     this->initWorld();
-    this->initVariables();
     this->placeHumans();
     this->placeZombies();
 }
 
-World::World(int matrixRow, int matrixColl, sf::Vector2u windowSize) : matrixRow(matrixRow), matrixColl(matrixColl),
-                                                                       windowSize(windowSize) {
+World::World(int row, int coll, sf::Vector2u windowSize) : windowSize(windowSize) {
+    this->initVariables(row, coll);
     this->initWorld();
-    this->initVariables();
     this->placeHumans();
     this->placeZombies();
 }
@@ -23,115 +25,135 @@ World::World(int matrixRow, int matrixColl, sf::Vector2u windowSize) : matrixRow
 World::World() {}
 
 World::~World() {
-    for (auto &e: this->matrixCells) {
+    for (auto &e: World::matrixCells) {
         delete e;
     }
 }
 
-void World::initVariables() {
-    this->numHumans = static_cast<int>((float) (this->matrixRow * this->matrixColl) * 0.50f);
-    this->numZombies = static_cast<int>((float) (this->matrixRow * this->matrixColl) * 0.25);
+void World::initVariables(int matrixRow, int matrixColl) {
+    World::matrixRow = matrixRow;
+    World::matrixColl = matrixColl;
+    this->numHumans = static_cast<int>((float) (World::matrixRow * World::matrixColl) * 0.50f);
+    this->numZombies = static_cast<int>((float) (World::matrixRow * World::matrixColl) * 0.25);
     this->it = 0;
 }
 
-void World::initWorld() {
+void World::initVariables(int matrixOrder) {
+    World::matrixRow = matrixOrder;
+    World::matrixColl = matrixOrder;
+    this->numHumans = static_cast<int>((float) (World::matrixRow * World::matrixColl) * 0.50f);
+    this->numZombies = static_cast<int>((float) (World::matrixRow * World::matrixColl) * 0.25);
+    this->it = 0;
+}
+
+void World::initWorld() const {
     int k = 0;
 
-    for (int i = 0; i < this->matrixRow; ++i) {
-        for (int j = 0; j < this->matrixColl; ++j) {
+    for (int i = 0; i < World::matrixRow; ++i) {
+        for (int j = 0; j < World::matrixColl; ++j) {
             float x = static_cast<float>(static_cast<float>(this->windowSize.x) /
-                                         static_cast<float>(this->matrixColl));
+                                         static_cast<float>(World::matrixColl));
             float y = static_cast<float>(static_cast<float>(this->windowSize.y) /
-                                         static_cast<float>(this->matrixRow));
+                                         static_cast<float>(World::matrixRow));
 
-            this->matrixCells.push_back(new Cell(sf::Vector2f(x, y), nullptr));
+            World::matrixCells.push_back(new Cell(sf::Vector2f(x, y), nullptr));
 
-            this->matrixCells[k]->setPosition((float) j * this->matrixCells[k]->getSize().x,
-                                              (float) i * this->matrixCells[k]->getSize().y);
-            this->matrixCells[k]->setPos(sf::Vector2i(i, j));
+            World::matrixCells[k]->setPosition((float) j * World::matrixCells[k]->getSize().x,
+                                              (float) i * World::matrixCells[k]->getSize().y);
+            World::matrixCells[k]->setPos(sf::Vector2i(i, j));
             ++k;
         }
     }
 }
 
-void World::placeHumans() {
+void World::placeHumans() const {
     int humans = this->numHumans;
     while (humans != 0) {
-        int randX = rand() % (this->matrixRow);
-        int randY = rand() % (this->matrixColl);
+        int randX = rand() % (World::matrixRow);
+        int randY = rand() % (World::matrixColl);
 
-        int index = randX * this->matrixColl + randY;
-        if (this->isEmptyPlace(index)) {
-            this->matrixCells[index]->placeEntity(new Human, sf::Color(rand() % 256, rand() % 256, rand() % 256, 255));
+        int index = randX * World::matrixColl + randY;
+        if (World::isEmptyPlace(index)) {
+            World::matrixCells[index]->placeEntity(new Human, sf::Color(rand() % 256, rand() % 256, rand() % 256, 255));
             --humans;
         }
     }
 }
 
-void World::placeZombies() {
+void World::placeZombies() const {
     int zombies = this->numZombies;
     while (zombies != 0) {
-        int randX = rand() % (this->matrixRow);
-        int randY = rand() % (this->matrixColl);
+        int randX = rand() % (World::matrixRow);
+        int randY = rand() % (World::matrixColl);
 
-        int index = randX * this->matrixColl + randY;
-        if (this->isEmptyPlace(index)) {
-            this->matrixCells[index]->placeEntity(new Zombie, sf::Color(rand() % 256, rand() % 256, rand() % 256, 255));
+        int index = randX * World::matrixColl + randY;
+        if (World::isEmptyPlace(index)) {
+            World::matrixCells[index]->placeEntity(new Zombie, sf::Color(rand() % 256, rand() % 256, rand() % 256, 255));
             --zombies;
         }
     }
 }
 
-bool World::isEmptyPlace(int index) const {
-    return this->matrixCells[index]->isEmpty();
+bool World::isEmptyPlace(int index) {
+    return World::matrixCells[index]->isEmpty();
 }
 
 void World::update() {
 
-    this->matrixCells[it]->updateCell(this->getNeighborhood(*this->matrixCells[it]));
+    /*Atualiza célula por célula, Tem uma visao mais detalhada do movimento de casa entidade
+     * É mais lento*/
+    World::matrixCells[it]->updateCell(this->flipGeneration);
     this->it++;
-    if (this->it >= this->matrixCells.size()) this->it = 0;
+    if (this->it >= World::matrixCells.size()) {
+        this->it = 0;
+        for (auto &e: World::matrixCells) {
+            if(e->getEntity() != nullptr)
+                ++*e->getEntity();
+        }
+    }
 
-//    for (auto &cell: this->matrixCells) {
-//        cell->updateCell(this->getNeighborhood(*cell));
+    /*Atualiza todas as celulas, Tem visao menos detalhada do movimento de cada célula.
+     * É mais rápido*/
+//    for (auto &cell: World::matrixCells) {
+//        cell->updateCell();
 //    }
 }
 
 void World::render(sf::RenderTarget &target) {
-    for (auto &cell: this->matrixCells) {
+    for (auto &cell: World::matrixCells) {
         cell->render(target);
     }
 }
 
 std::vector<Cell *> World::getNeighborhood(int index) {
-    int posX = (index) / this->matrixColl;
-    int posY = (index) % this->matrixColl;
+    int posX = (index) / World::matrixColl;
+    int posY = (index) % World::matrixColl;
 
-    sf::Vector2i top = posX - 1 >= 0 ? sf::Vector2i(posX - 1, posY) : sf::Vector2i(this->matrixRow - 1, posY);
+    sf::Vector2i top = posX - 1 >= 0 ? sf::Vector2i(posX - 1, posY) : sf::Vector2i(World::matrixRow - 1, posY);
 
-    sf::Vector2i bottom = posX + 1 <= this->matrixRow - 1 ? sf::Vector2i(posX + 1, posY) : sf::Vector2i(0, posY);
+    sf::Vector2i bottom = posX + 1 <= World::matrixRow - 1 ? sf::Vector2i(posX + 1, posY) : sf::Vector2i(0, posY);
 
-    sf::Vector2i left = posY - 1 >= 0 ? sf::Vector2i(posX, posY - 1) : sf::Vector2i(posX, this->matrixColl - 1);
+    sf::Vector2i left = posY - 1 >= 0 ? sf::Vector2i(posX, posY - 1) : sf::Vector2i(posX, World::matrixColl - 1);
 
-    sf::Vector2i right = posY + 1 <= this->matrixColl - 1 ? sf::Vector2i(posX, posY + 1) : sf::Vector2i(posX, 0);
+    sf::Vector2i right = posY + 1 <= World::matrixColl - 1 ? sf::Vector2i(posX, posY + 1) : sf::Vector2i(posX, 0);
 
     sf::Vector2i topLeft = (posX - 1 >= 0 && posY - 1 >= 0) ? sf::Vector2i(posX - 1, posY - 1) : sf::Vector2i(-1, -1);
 
-    sf::Vector2i topRight = (posX - 1 >= 0 && posY + 1 <= this->matrixColl - 1) ?
+    sf::Vector2i topRight = (posX - 1 >= 0 && posY + 1 <= World::matrixColl - 1) ?
                             sf::Vector2i(posX - 1, posY + 1) : sf::Vector2i(-1, -1);
 
-    sf::Vector2i bottomLeft = (posX + 1 <= this->matrixRow - 1 && posY - 1 >= 0) ?
+    sf::Vector2i bottomLeft = (posX + 1 <= World::matrixRow - 1 && posY - 1 >= 0) ?
                               sf::Vector2i(posX + 1, posY - 1) : sf::Vector2i(-1, -1);
 
-    sf::Vector2i bottomRight = (posX + 1 <= this->matrixRow - 1 && posY + 1 <= this->matrixColl - 1) ?
+    sf::Vector2i bottomRight = (posX + 1 <= World::matrixRow - 1 && posY + 1 <= World::matrixColl - 1) ?
                                sf::Vector2i(posX + 1, posY + 1) : sf::Vector2i(-1, -1);
 
     std::vector<sf::Vector2i> cellsPositions{top, bottom, left, right, topLeft, topRight, bottomLeft, bottomRight};
     std::vector<Cell *> neighborhood;
     for (auto &e: cellsPositions) {
         if (e.x != -1) {
-            int i = e.x * this->matrixColl + e.y;
-            neighborhood.push_back(this->matrixCells[i]);
+            int i = e.x * World::matrixColl + e.y;
+            neighborhood.push_back(World::matrixCells[i]);
         } else {
             neighborhood.push_back(nullptr);
         }
@@ -141,9 +163,9 @@ std::vector<Cell *> World::getNeighborhood(int index) {
 }
 
 std::vector<Cell *> World::getNeighborhood(Cell &cell) {
-    return this->getNeighborhood(cell.getPos().x, cell.getPos().y);
+    return World::getNeighborhood(cell.getPos().x, cell.getPos().y);
 }
 
 std::vector<Cell *> World::getNeighborhood(int row, int col) {
-    return this->getNeighborhood(row * this->matrixColl + col);
+    return World::getNeighborhood(row * World::matrixColl + col);
 }
