@@ -69,12 +69,12 @@ void World::initWorld() const {
 void World::placeHumans() const {
     int humans = this->numHumans;
     while (humans != 0) {
-        int randX = rand() % (World::matrixRow);
-        int randY = rand() % (World::matrixColl);
+        int randX = random() % (World::matrixRow);
+        int randY = random() % (World::matrixColl);
 
         int index = randX * World::matrixColl + randY;
         if (World::isEmptyPlace(index)) {
-            World::matrixCells[index]->placeEntity(new Human, sf::Color(rand() % 256, rand() % 256, rand() % 256, 255));
+            World::matrixCells[index]->placeEntity(new Human);
             --humans;
         }
     }
@@ -83,13 +83,12 @@ void World::placeHumans() const {
 void World::placeZombies() const {
     int zombies = this->numZombies;
     while (zombies != 0) {
-        int randX = rand() % (World::matrixRow);
-        int randY = rand() % (World::matrixColl);
+        int randX = random() % (World::matrixRow);
+        int randY = random() % (World::matrixColl);
 
         int index = randX * World::matrixColl + randY;
         if (World::isEmptyPlace(index)) {
-            World::matrixCells[index]->placeEntity(new Zombie,
-                                                   sf::Color(rand() % 256, rand() % 256, rand() % 256, 255));
+            World::matrixCells[index]->placeEntity(new Zombie);
             --zombies;
         }
     }

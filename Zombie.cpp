@@ -42,7 +42,7 @@ bool Zombie::isDead(const std::vector<Cell *>& cellsAround) {
 
     if (this->age > this->longevity) return true;
     if (numZ >= 6 && numH == 0) return true;
-    if (((double) rand() / (RAND_MAX)) < 1 / 32.f) return true;
+    if (((double) random() / (RAND_MAX)) < 1 / 32.f) return true;
     if (this->energy < 0) return true;
 
     return false;
@@ -59,7 +59,7 @@ Cell *Zombie::move(const std::vector<Cell *> &cellsAround) {
 
     int randIndex;
     if(!possibleMoves.empty()) {
-        randIndex = rand() % possibleMoves.size();
+        randIndex = random() % possibleMoves.size();
         if (possibleMoves[randIndex]->getEntity() != nullptr &&
             possibleMoves[randIndex]->getEntity()->getEntityType() == Type::HumanEntity) this->energy++;
         else this->energy--;
@@ -90,7 +90,7 @@ Cell *Zombie::possibleReproducer(std::vector<Cell *> cellsAround) {
             possibleMoves.push_back(e);
         }
     }
-    return !possibleMoves.empty() ? possibleMoves[rand() % possibleMoves.size()] : nullptr;
+    return !possibleMoves.empty() ? possibleMoves[random() % possibleMoves.size()] : nullptr;
 }
 
 bool Zombie::reproduceRule(const std::vector<Cell *> &cellsAround) {

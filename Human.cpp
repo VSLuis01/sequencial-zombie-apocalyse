@@ -56,7 +56,7 @@ Cell *Human::move(const std::vector<Cell *> &cellsAround) {
             possibleMoves.push_back(e);
         }
     }
-    return !possibleMoves.empty() ? possibleMoves[rand() % possibleMoves.size()] : nullptr;
+    return !possibleMoves.empty() ? possibleMoves[random() % possibleMoves.size()] : nullptr;
 }
 
 Entity *Human::copy() {
@@ -79,7 +79,7 @@ Cell *Human::possibleReproducer(std::vector<Cell *> cellsAround) {
             possibleRepoCells.push_back(e);
         }
     }
-    return !possibleRepoCells.empty() ? possibleRepoCells[rand() % possibleRepoCells.size()] : nullptr;
+    return !possibleRepoCells.empty() ? possibleRepoCells[random() % possibleRepoCells.size()] : nullptr;
 }
 
 bool Human::reproduceRule(const std::vector<Cell *> &cellsAround) {

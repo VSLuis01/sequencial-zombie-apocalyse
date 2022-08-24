@@ -91,11 +91,11 @@ void Cell::updateCell() {
             }
         }
         if ((numH > 4) && (numH > numZ) && (possibleRepH.size() > 2)) {
-            this->entity = !possibleRepH.empty() ? possibleRepH[rand() % possibleRepH.size()]->reproduce() : nullptr;
+            this->entity = !possibleRepH.empty() ? possibleRepH[random() % possibleRepH.size()]->reproduce() : nullptr;
             this->setFillColor(sf::Color::Yellow);
             return;
         } else if ((numZ > 4) && (numZ > numH) && (possibleRepZ.size() > 2)) {
-            this->entity = !possibleRepZ.empty() ? possibleRepZ[rand() % possibleRepZ.size()]->possibleReproducer() : nullptr;
+            this->entity = !possibleRepZ.empty() ? possibleRepZ[random() % possibleRepZ.size()]->possibleReproducer() : nullptr;
             this->setFillColor(sf::Color::White);
             return;
         }
@@ -156,6 +156,7 @@ void Cell::updateColor() {
 
 void Cell::placeEntity(Entity *entity) {
     this->entity = entity;
+    this->updateColor();
     this->entity->shape.setPosition(
             this->getPosition().x + (this->getGlobalBounds().width / 2) - 10.f,
             this->getPosition().y + (this->getGlobalBounds().height / 2) - 10.f);
